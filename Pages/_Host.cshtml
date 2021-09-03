@@ -15,6 +15,45 @@
     <link rel="stylesheet" href="css/bootstrap/bootstrap.min.css" />
     <link href="css/site.css" rel="stylesheet" />
     <link href="ContinousDeployment.styles.css" rel="stylesheet" />
+<script>
+
+    const Perguntar = () => {
+
+        var pergunta = document.querySelector("#pergunta").value;
+        var resposta = document.querySelector(".resposta");
+        var endpoint = 'https://testeapptreinamentoqna.azurewebsites.net/qnamaker/knowledgebases/60d23d02-6674-4ec9-8f0b-6bcecfa3bfa1/generateAnswer';
+
+        resposta.innerHTML = '';
+
+        var raw = {
+            "question" : pergunta
+        }
+
+        fetch(endpoint, {
+            method : 'POST',
+            headers : {
+                'Authorization' : '380ae4bf-0459-4671-8ecd-bc7565207bb7',
+                'Content-Type' : 'application/json'
+            },
+            body : JSON.stringify(raw)
+        })
+        .then(response => response.json())
+        .then(data => {
+
+            if(data.answers != null){
+                
+                data.answers.forEach(item => {
+                    resposta.append(item.answer+" \n");
+                });
+            }
+        })
+        .catch(erro => console.log(erro))            
+
+    }
+
+</script>
+
+
 </head>
 <body>
     <component type="typeof(App)" render-mode="ServerPrerendered" />
